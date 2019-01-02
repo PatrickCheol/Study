@@ -13,7 +13,7 @@ ROOM_URI=['categoryUid1=ff8080813ed0c5c4013ed0d86aa50019&categoryUid1s=ff8080813
 'categoryUid1=ff8080813ed0c5c4013ed0d851990018&categoryUid1s=ff8080813ed0c5c4013ed0d851990018',
 'categoryUid1=9be51dd55a7dc0e4015a83ca1a9f048c&categoryUid1s=9be51dd55a7dc0e4015a83ca1a9f048c',
 'categoryUid1=9be51dc24f86cbc7015089045a334784&categoryUid1s=9be51dc24f86cbc7015089045a334784']
-print('고산 휴양림 비어있는 방 조회 스크립트 by 이상철')
+print('고산 휴양림 비어있는 방 조회 스크립트 by patrick')
 while True:
 	print("조회 원하는 달 ex)7월 => 7 (최대 현재 달 +1달 까지 조회 가능) : ")
 	print("quit 입력 시 종료")
