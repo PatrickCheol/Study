@@ -36,51 +36,54 @@ CVS_POST_INFO = {
 	'pay_flag':'1'
 }
 
-def getAddr():
+ADDR_GET = {
+	'confmKey':'', #API 사용 키
+	'currentPage':'1',
+	'countPerPage':'10',
+	'resultType':'json',
+	'keyword':''
+}
+
+def Reserve_POST():
 
 	URL="http://www.juso.go.kr/addrlink/addrLinkApi.do?"
-	U_confmKey="" # API 사용 키
-	U_currentPage="1"
-	U_countPerPage="10"
 
 	excel_document = openpyxl.load_workbook('sample.xlsx')
 	sheet = excel_document['Sheet1']
-	name=sheet['A2'].value
-	s_Addr=sheet['B2'].value
-	d_Addr=sheet['C2'].value
-	phone=sheet['D2'].value
-	U_keyword=parse.quote(s_Addr)
-	U_resultType="json"
-	U_Search_URL=URL+"confmKey="+U_confmKey+"&"+"currentPage="+U_currentPage+"&"+"countPerPage="+U_countPerPage+"&"+"keyword="+U_keyword+"&"+"resultType="+U_resultType
+	i=2
 
-	with requests.get(U_Search_URL) as response:
-		html_Json=response.json()
+	
+	while sheet['A'+str(i)].value!=None:
+		name=sheet['A'+str(i)].value
+		s_Addr=sheet['B'+str(i)].value
+		d_Addr=sheet['C'+str(i)].value
+		phone=sheet['D'+str(i)].value
 
-		if html_Json["results"]["common"]["errorCode"]!="0":
-			print("Error")
-		else:
-			CVS_POST_INFO['reserved_comments']=name
-			CVS_POST_INFO['receiver_name']=name
-			CVS_POST_INFO['receiver_telno1']=phone.split('-')[0]
-			CVS_POST_INFO['receiver_telno2']=phone.split('-')[1]
-			CVS_POST_INFO['receiver_telno3']=phone.split('-')[2]
-			CVS_POST_INFO['receiver_postno']=html_Json["results"]["juso"][0]["zipNo"]
-			CVS_POST_INFO['receiver_addr']=html_Json["results"]["juso"][0]["roadAddr"]
-			CVS_POST_INFO['receiver_detail_addr']=d_Addr
-		
-		
+		ADDR_GET['keyword']=parse.quote(s_Addr)
 
-def ReservePost():
-	with requests.Session() as s:
-		login_req=s.post('https://www.cvsnet.co.kr/member/login/setLogin.do',data=CVS_LOGIN_INFO)
-		print(login_req.status_code)
-		#로그인 세션 가져옴
+		with requests.get(URL,data=ADDR_GET) as response:
+			html_Json=response.json()
 
-		post_req=s.post('https://www.cvsnet.co.kr/reservation-inquiry/domestic/all-insert.do',data=CVS_POST_INFO)
-		print(post_req.status_code)
+			if html_Json["results"]["common"]["errorCode"]!="0":
+				print("Error")
+			else:
+				CVS_POST_INFO['reserved_comments']=name
+				CVS_POST_INFO['receiver_name']=name
+				CVS_POST_INFO['receiver_telno1']=phone.split('-')[0]
+				CVS_POST_INFO['receiver_telno2']=phone.split('-')[1]
+				CVS_POST_INFO['receiver_telno3']=phone.split('-')[2]
+				CVS_POST_INFO['receiver_postno']=html_Json["results"]["juso"][0]["zipNo"]
+				CVS_POST_INFO['receiver_addr']=html_Json["results"]["juso"][0]["roadAddr"]
+				CVS_POST_INFO['receiver_detail_addr']=d_Addr
+
+		with requests.Session() as s:
+			login_req=s.post('https://www.cvsnet.co.kr/member/login/setLogin.do',data=CVS_LOGIN_INFO)
+			#로그인 세션 가져옴
+
+			post_req=s.post('https://www.cvsnet.co.kr/reservation-inquiry/domestic/all-insert.do',data=CVS_POST_INFO)
+		i+=1
+	
 
 
 if __name__ == '__main__':
-	getAddr()
-	print(CVS_POST_INFO)
-	ReservePost()
+	Reserve_POST()
