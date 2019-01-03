@@ -59,10 +59,13 @@ def Reserve_POST():
 		d_Addr=sheet['C'+str(i)].value
 		phone=sheet['D'+str(i)].value
 
-		ADDR_GET['keyword']=parse.quote(s_Addr)
+		ADDR_GET['keyword']=s_Addr
 
-		with requests.get(URL,data=ADDR_GET) as response:
-			html_Json=response.json()
+		with requests.Session() as s:
+			addr_req=s.get('http://www.juso.go.kr/addrlink/addrLinkApi.do?',data=ADDR_GET)
+			html_Json=addr_req.json()
+			print(html_Json)
+
 
 			if html_Json["results"]["common"]["errorCode"]!="0":
 				print("Error")
@@ -76,11 +79,10 @@ def Reserve_POST():
 				CVS_POST_INFO['receiver_addr']=html_Json["results"]["juso"][0]["roadAddr"]
 				CVS_POST_INFO['receiver_detail_addr']=d_Addr
 
-		with requests.Session() as s:
-			login_req=s.post('https://www.cvsnet.co.kr/member/login/setLogin.do',data=CVS_LOGIN_INFO)
-			#로그인 세션 가져옴
+		login_req=s.post('https://www.cvsnet.co.kr/member/login/setLogin.do',data=CVS_LOGIN_INFO)
+		#로그인 세션 가져옴
 
-			post_req=s.post('https://www.cvsnet.co.kr/reservation-inquiry/domestic/all-insert.do',data=CVS_POST_INFO)
+		post_req=s.post('https://www.cvsnet.co.kr/reservation-inquiry/domestic/all-insert.do',data=CVS_POST_INFO)
 		i+=1
 	
 
