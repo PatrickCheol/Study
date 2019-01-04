@@ -45,14 +45,10 @@ ADDR_GET = {
 }
 
 def Reserve_POST():
-
-	URL="http://www.juso.go.kr/addrlink/addrLinkApi.do?"
-
 	excel_document = openpyxl.load_workbook('sample.xlsx')
 	sheet = excel_document['Sheet1']
 	i=2
 
-	
 	while sheet['A'+str(i)].value!=None:
 		name=sheet['A'+str(i)].value
 		s_Addr=sheet['B'+str(i)].value
@@ -85,7 +81,5 @@ def Reserve_POST():
 		post_req=s.post('https://www.cvsnet.co.kr/reservation-inquiry/domestic/all-insert.do',data=CVS_POST_INFO)
 		i+=1
 	
-
-
 if __name__ == '__main__':
 	Reserve_POST()
