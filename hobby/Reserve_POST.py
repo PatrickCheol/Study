@@ -16,7 +16,7 @@ CVS_POST_INFO = {
 	'reserved_comments':'', #예약 이름
 	'addrType':'01',
 	'real_sender_name':'', #보내는사람 이름
-	'real_sender_telno1':'010', #보내는 사람 번호1
+	'real_sender_telno1':'', #보내는 사람 번호1
 	'real_sender_telno2':'', #보내는 사람 번호2
 	'real_sender_telno3':'', #보내는 사람 번호3
 	'real_sender_post_no':'', #보내는 사람 우편번호
