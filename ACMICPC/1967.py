@@ -27,32 +27,3 @@ print(node_map)
 dfs(1,[],0)
 dfs(idx,[],0)
 print(res)
-
-
-
-private static int dfs(int i, int max) {
-        visit[i] = true;
-        System.out.println("max " + max + " / " + "node "+ i);
-        for (int[] j : tree.get(i).val)
-            if (!visit[j[0]]) {
-                max = dfs(j[0], max + j[1]);
-            } else {
-                a.add(max);
-//                max -= j[1];
-            }
-        return max;
-    }
-
-
-    private static void dfs(int i, int max) {
-        visit[i] = true;
-        for (int[] j : tree.get(i).val) {
-            int temp = max;
-            if (!visit[j[0]]) {
-                dfs(j[0], max + j[1]);
-            } else if (tree.get(i).val.size() == 1) {
-                result.add(max);
-            }
-            max = temp;
-        }
-    }
