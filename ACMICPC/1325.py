@@ -1,4 +1,5 @@
 import sys
+sys.setrecursionlimit(15000)
 visit=[0]*10000
 dp=[0]*10000
 def dfs(i,j):
